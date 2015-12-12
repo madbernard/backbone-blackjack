@@ -14,11 +14,29 @@ window.App = (function(superClass) {
     this.set('deck', deck = new Deck());
     this.set('playerHand', deck.dealPlayer());
     this.set('dealerHand', deck.dealDealer());
-    return this.get('dealerHand').on('compareScores', (function(_this) {
-      return function() {
-        return _this.compareScores();
-      };
-    })(this));
+    this.get('playerHand').on('all', this.processPlayerEvent, this);
+    return this.get('dealerHand').on('all', this.processDealerEvent, this);
+  };
+
+  App.prototype.processDealerEvent = function(event, hand) {
+    if (event === 'stand') {
+      return this.compareScores();
+    } else if (event === 'youWin') {
+      return this.trigger('youWinApp');
+    }
+  };
+
+  App.prototype.processPlayerEvent = function(event, hand) {
+    if (event === 'stand') {
+      this.get('dealerHand').at(0).flip();
+      return this.get('dealerHand').dealerPlay();
+    } else if (event === 'youWin') {
+      return this.trigger('youWinApp');
+    } else if (event === 'dealerWins') {
+      return this.trigger('dealerWinApp');
+    } else if (event === 'blackJackWin') {
+      return this.trigger('blackJackWinApp');
+    }
   };
 
   App.prototype.compareScores = function() {
@@ -26,11 +44,17 @@ window.App = (function(superClass) {
     playerScore = this.get('playerHand').scores();
     dealerScore = this.get('dealerHand').scores();
     if (playerScore > dealerScore) {
-      return this.trigger('youWin');
+      return this.trigger('youWinApp');
     } else if (playerScore === dealerScore) {
-      return this.trigger('youPush');
+      return this.trigger('youPushApp');
     } else {
-      return this.trigger('dealerWins');
+      return this.trigger('dealerWinsApp');
+
+      /*
+          @on 'stand', ->
+      @.at(0).flip()
+      @dealerPlay()
+       */
     }
   };
 

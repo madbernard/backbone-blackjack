@@ -14,35 +14,34 @@ window.Hand = (function(superClass) {
   Hand.prototype.initialize = function(array, deck, isDealer) {
     this.deck = deck;
     this.isDealer = isDealer;
-    this.on('stand', function() {
-      this.at(0).flip();
-      return this.dealerPlay();
-    });
     return this.lost = false;
   };
 
   Hand.prototype.hit = function() {
-    return this.add(this.deck.pop());
+    this.add(this.deck.pop());
+    if (this.scores() > 21) {
+      return this.bust();
+    }
   };
 
   Hand.prototype.stand = function() {
-    return this.trigger('stand');
+    this.trigger('stand', this);
+    return console.log('stand from player?');
   };
 
   Hand.prototype.bust = function() {
     this.lost = true;
     if (this.isDealer) {
-      console.log('youWin trigger works');
-      return console.log('youWin');
+      return this.trigger('youWin', this);
     } else {
-      return console.log('dealerWins');
+      return this.trigger('dealerWins', this);
     }
   };
 
   Hand.prototype.hasBlackjack = function() {
     if (this.scores() === 21) {
       this.lost = true;
-      return this.trigger('blackJackWin');
+      return this.trigger('blackJackWin', this);
     }
   };
 
@@ -71,7 +70,7 @@ window.Hand = (function(superClass) {
       this.hit();
     }
     if (!this.lost) {
-      return this.trigger('compareScores');
+      return this.trigger('stand', this);
     }
   };
 

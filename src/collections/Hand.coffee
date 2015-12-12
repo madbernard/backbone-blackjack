@@ -2,10 +2,8 @@ class window.Hand extends Backbone.Collection
   model: Card
 
   initialize: (array, @deck, @isDealer) ->
-    @on 'stand', ->
-      @.at(0).flip()
-      @dealerPlay()
 
+    # to stop dealer from playing when player lost/aka game over
     @lost = false
 
     #stop listening for hit, dealer plays until win or bust
@@ -15,24 +13,27 @@ class window.Hand extends Backbone.Collection
 #this.isDealer = undefined || true
   hit: ->
     @add(@deck.pop())
+    if @scores() > 21
+      @bust()
 
-  stand: -> @trigger 'stand'
+  stand: ->
+    @trigger 'stand', @
+    console.log('stand from player?')
   #dealer isa  hand collection that is listening for stand, if dealer
   #then it signals that it can do things...  or just does thigns
 
   bust: ->
     @lost = true
     if @isDealer
-      console.log 'youWin trigger works'
-      console.log 'youWin'
+      @trigger 'youWin', @
     else
-      console.log 'dealerWins'
+      @trigger 'dealerWins', @
 
   hasBlackjack: ->
     if @scores() is 21
       #console.log 'hasBlackjack is working'
       @lost = true
-      @trigger 'blackJackWin'
+      @trigger 'blackJackWin', @
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
@@ -54,7 +55,7 @@ class window.Hand extends Backbone.Collection
 
   dealerPlay: -> #plays cards
     @hit() while @scores() < 17
-    if not @lost then @trigger 'compareScores'
+    if not @lost then @trigger 'stand', @
 ###
 
 if hasace is true
