@@ -15,9 +15,8 @@ window.Hand = (function(superClass) {
     this.deck = deck;
     this.isDealer = isDealer;
     return this.on('stand', function() {
-      if (this.isDealer) {
-        return this.dealerPlay;
-      }
+      this.at(0).flip();
+      return this.dealerPlay();
     });
   };
 
@@ -42,13 +41,18 @@ window.Hand = (function(superClass) {
   };
 
   Hand.prototype.scores = function() {
-    return [this.minScore(), this.minScore() + 11 * this.hasAce()];
+    if (this.hasAce() && (this.minScore() + 10 * this.hasAce()) < 22) {
+      return this.minScore() + 10 * this.hasAce();
+    } else {
+      return this.minScore();
+    }
   };
 
   Hand.prototype.dealerPlay = function() {
-    if (this.scores()[0] < 17) {
-      return this.hit();
+    while (this.scores() < 17) {
+      this.hit();
     }
+    return this.trigger('gameOver');
   };
 
   return Hand;
@@ -59,8 +63,6 @@ window.Hand = (function(superClass) {
 /*
 
 if hasace is true
-
-[@minScore(), @minScore() + 10 * @hasAce()]  Aces are worth 11 or 1
 
 make a stand function, which fires an event
   after stand, player hits will no longer register?

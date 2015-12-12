@@ -13,7 +13,25 @@ window.App = (function(superClass) {
     var deck;
     this.set('deck', deck = new Deck());
     this.set('playerHand', deck.dealPlayer());
-    return this.set('dealerHand', deck.dealDealer());
+    this.set('dealerHand', deck.dealDealer());
+    return this.get('dealerHand').on('gameOver', (function(_this) {
+      return function() {
+        return _this.compareScores();
+      };
+    })(this));
+  };
+
+  App.prototype.compareScores = function() {
+    var dealerScore, playerScore;
+    playerScore = this.get('playerHand').scores();
+    dealerScore = this.get('dealerHand').scores();
+    if (playerScore > dealerScore) {
+      return alert('You win!');
+    } else if (playerScore === dealerScore) {
+      return alert('You push!');
+    } else {
+      return alert('Dealer wins!');
+    }
   };
 
   return App;

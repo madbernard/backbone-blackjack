@@ -16,7 +16,7 @@ window.AppView = (function(superClass) {
       return this.model.get('playerHand').hit();
     },
     'click .stand-button': function() {
-      return this.model.get('playerHand').stand();
+      return this.model.get('dealerHand').stand();
     }
   };
 

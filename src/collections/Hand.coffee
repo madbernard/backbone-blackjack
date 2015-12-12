@@ -2,8 +2,11 @@ class window.Hand extends Backbone.Collection
   model: Card
 
   initialize: (array, @deck, @isDealer) ->
-    @on 'stand', -> if @isDealer then @dealerPlay
+    @on 'stand', ->
+      @.at(0).flip()
+      @dealerPlay()
     #stop listening for hit, dealer plays until win or bust
+    #flip dealer card over
 # the array is from the hand array [card, card]; the deck is the This.deck passed through
 #this.deck = deck
 #this.isDealer = undefined || true
@@ -23,18 +26,21 @@ class window.Hand extends Backbone.Collection
   , 0
 # if the card is visible, add it to the score, otherwise add 0 to the score
   scores: ->
+    if @hasAce() and (@minScore() + 10 * @hasAce()) < 22
+      @minScore() + 10 * @hasAce()
+    else @minScore()
+
     # The scores are an array of potential scores.
     # Usually, that array contains one element. That is the only score.
     # when there is an ace, it offers you two scores - the original score, and score + 10.
-    [@minScore(), @minScore() + 11 * @hasAce()]
+    #[@minScore(), @minScore() + 11 * @hasAce()]
 
   dealerPlay: -> #plays cards
-    if @scores()[0] < 17 then @hit()
+    @hit() while @scores() < 17
+    @trigger 'gameOver'
 ###
 
 if hasace is true
-
-[@minScore(), @minScore() + 10 * @hasAce()]  Aces are worth 11 or 1
 
 make a stand function, which fires an event
   after stand, player hits will no longer register?

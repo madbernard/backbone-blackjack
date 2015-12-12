@@ -30,7 +30,7 @@ window.HandView = (function(superClass) {
         model: card
       }).$el;
     }));
-    return this.$('.score').text(this.collection.scores()[0]);
+    return this.$('.score').text(this.collection.scores());
   };
 
   return HandView;
