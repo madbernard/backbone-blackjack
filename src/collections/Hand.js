@@ -22,10 +22,7 @@ window.Hand = (function(superClass) {
   };
 
   Hand.prototype.hit = function() {
-    this.add(this.deck.pop());
-    if (this.scores() > 21) {
-      return this.bust();
-    }
+    return this.add(this.deck.pop());
   };
 
   Hand.prototype.stand = function() {
@@ -35,17 +32,17 @@ window.Hand = (function(superClass) {
   Hand.prototype.bust = function() {
     this.lost = true;
     if (this.isDealer) {
-      return alert('You win!');
+      console.log('youWin trigger works');
+      return console.log('youWin');
     } else {
-      return alert("Dealer wins!");
+      return console.log('dealerWins');
     }
   };
 
   Hand.prototype.hasBlackjack = function() {
     if (this.scores() === 21) {
-      console.log('hasBlackjack is working');
       this.lost = true;
-      return alert('Blackjack! You win!');
+      return this.trigger('blackJackWin');
     }
   };
 

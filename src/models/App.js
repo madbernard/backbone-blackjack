@@ -26,11 +26,11 @@ window.App = (function(superClass) {
     playerScore = this.get('playerHand').scores();
     dealerScore = this.get('dealerHand').scores();
     if (playerScore > dealerScore) {
-      return alert('You win!');
+      return this.trigger('youWin');
     } else if (playerScore === dealerScore) {
-      return alert('You push!');
+      return this.trigger('youPush');
     } else {
-      return alert('Dealer wins!');
+      return this.trigger('dealerWins');
     }
   };
 

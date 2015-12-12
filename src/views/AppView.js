@@ -17,6 +17,19 @@ window.AppView = (function(superClass) {
     },
     'click .stand-button': function() {
       return this.model.get('dealerHand').stand();
+    },
+    'youWin': function() {
+      console.log('youWin listener initialized');
+      return AppView.endCondition('youWin');
+    },
+    'dealerWins': function() {
+      return console.log('dealerWins listener initialized');
+    },
+    'youPush': function() {
+      return console.log('youPush listener initialized');
+    },
+    'blackJackWin': function() {
+      return console.log('blackJackWin listener initialized');
     }
   };
 
@@ -33,6 +46,13 @@ window.AppView = (function(superClass) {
     return this.$('.dealer-hand-container').html(new HandView({
       collection: this.model.get('dealerHand')
     }).el);
+  };
+
+  AppView.prototype.endCondition = function(endTrigger) {
+    if (endTrigger === 'youWin') {
+      console.log('youWin trigger made it to endCondition');
+      return alert('You win!');
+    }
   };
 
   return AppView;

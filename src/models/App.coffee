@@ -12,11 +12,11 @@ class window.App extends Backbone.Model
     dealerScore = @get('dealerHand').scores()
 
     if playerScore > dealerScore
-      alert 'You win!'
+      @trigger 'youWin'
     else if playerScore is dealerScore
-      alert 'You push!'
+      @trigger 'youPush'
     else
-      alert 'Dealer wins!'
+      @trigger 'dealerWins'
 
 # set up a listener in the initialize for the done signal from dealPlayer
 #it calls a function that gets the scored from the playerhand and dealerHand

@@ -11,7 +11,7 @@ window.CardView = (function(superClass) {
 
   CardView.prototype.className = 'card';
 
-  CardView.prototype.template = _.template('<%= rankName %> of <%= suitName %>');
+  CardView.prototype.template = _.template('<% if(this.model.get(\'revealed\')) { %><img src="img/cards/<%= rankName %>-<%= suitName %>.png" alt="<%= rankName %> of <%= suitName %>"><% }else{ %><img src="img/card-back.png" alt="Card Back"><% }%></img>');
 
   CardView.prototype.initialize = function() {
     return this.render();

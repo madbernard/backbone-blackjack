@@ -1,7 +1,12 @@
 class window.CardView extends Backbone.View
-  className: 'card' #$('.card')
+  className: 'card' #$('.card') div is class of card
 
-  template: _.template '<%= rankName %> of <%= suitName %>' #7 of Hearts
+  template: _.template '<% if(this.model.get(\'revealed\')) { %><img src="img/cards/<%= rankName %>-<%= suitName %>.png" alt="<%= rankName %> of <%= suitName %>"><% }else{ %><img src="img/card-back.png" alt="Card Back"><% }%></img>' #7 of Hearts
+  #<img src=7 of hearts</img>
+  # <img src="" alt="">  </img>
+  #template: _.template '<h2><% if(isDealer){ %>Dealer<% }else{ %>You<% } %> (<span class="score"></span>)</h2>'
+
+
 
   initialize: -> @render()
 
