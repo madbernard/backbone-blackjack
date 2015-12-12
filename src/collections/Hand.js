@@ -18,13 +18,7 @@ window.Hand = (function(superClass) {
       this.at(0).flip();
       return this.dealerPlay();
     });
-    this.lost = false;
-    if (!this.isDealer) {
-      if (this.scores() === 21) {
-        this.lost = true;
-        return alert('Blackjack! You win!');
-      }
-    }
+    return this.lost = false;
   };
 
   Hand.prototype.hit = function() {
@@ -44,6 +38,14 @@ window.Hand = (function(superClass) {
       return alert('You win!');
     } else {
       return alert("Dealer wins!");
+    }
+  };
+
+  Hand.prototype.hasBlackjack = function() {
+    if (this.scores() === 21) {
+      console.log('hasBlackjack is working');
+      this.lost = true;
+      return alert('Blackjack! You win!');
     }
   };
 

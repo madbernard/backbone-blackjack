@@ -8,11 +8,6 @@ class window.Hand extends Backbone.Collection
 
     @lost = false
 
-    if not @isDealer
-      if @scores() is 21
-        @lost = true
-        alert 'Blackjack! You win!'
-
     #stop listening for hit, dealer plays until win or bust
     #flip dealer card over
 # the array is from the hand array [card, card]; the deck is the This.deck passed through
@@ -32,6 +27,12 @@ class window.Hand extends Backbone.Collection
       alert 'You win!'
     else
       alert "Dealer wins!"
+
+  hasBlackjack: ->
+    if @scores() is 21
+      console.log 'hasBlackjack is working'
+      @lost = true
+      alert 'Blackjack! You win!'
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1

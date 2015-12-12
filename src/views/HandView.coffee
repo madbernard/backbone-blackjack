@@ -13,7 +13,8 @@ class window.HandView extends Backbone.View
     @$el.html @template @collection
     @$el.append @collection.map (card) ->
       new CardView(model: card).$el
-    @$('.score').text @collection.scores() # setting the dom score to this.collection.scores() <- [hand.min(), hand.min() * 11 + hand.hasAces()]
+    # setting the dom score to this.collection.scores() <- [hand.min(), hand.min() * 11 + hand.hasAces()]
+    @$('.score').text @collection.scores()
 
 # collection in line 15 is Hand
 # every time it renders it changes the score text based on calling minscore at position 0 in the scores array in Hand
