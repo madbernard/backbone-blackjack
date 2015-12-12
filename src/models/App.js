@@ -14,7 +14,7 @@ window.App = (function(superClass) {
     this.set('deck', deck = new Deck());
     this.set('playerHand', deck.dealPlayer());
     this.set('dealerHand', deck.dealDealer());
-    return this.get('dealerHand').on('gameOver', (function(_this) {
+    return this.get('dealerHand').on('compareScores', (function(_this) {
       return function() {
         return _this.compareScores();
       };

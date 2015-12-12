@@ -10,3 +10,4 @@ class window.CardView extends Backbone.View
     @$el.html @template @model.attributes # this.$el.html(this.template(this.model.attributes))
     @$el.addClass 'covered' unless @model.get 'revealed'
 
+

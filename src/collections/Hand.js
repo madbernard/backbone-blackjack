@@ -14,18 +14,37 @@ window.Hand = (function(superClass) {
   Hand.prototype.initialize = function(array, deck, isDealer) {
     this.deck = deck;
     this.isDealer = isDealer;
-    return this.on('stand', function() {
+    this.on('stand', function() {
       this.at(0).flip();
       return this.dealerPlay();
     });
+    this.lost = false;
+    if (!this.isDealer) {
+      if (this.scores() === 21) {
+        this.lost = true;
+        return alert('Blackjack! You win!');
+      }
+    }
   };
 
   Hand.prototype.hit = function() {
-    return this.add(this.deck.pop());
+    this.add(this.deck.pop());
+    if (this.scores() > 21) {
+      return this.bust();
+    }
   };
 
   Hand.prototype.stand = function() {
     return this.trigger('stand');
+  };
+
+  Hand.prototype.bust = function() {
+    this.lost = true;
+    if (this.isDealer) {
+      return alert('You win!');
+    } else {
+      return alert("Dealer wins!");
+    }
   };
 
   Hand.prototype.hasAce = function() {
@@ -52,7 +71,9 @@ window.Hand = (function(superClass) {
     while (this.scores() < 17) {
       this.hit();
     }
-    return this.trigger('gameOver');
+    if (!this.lost) {
+      return this.trigger('compareScores');
+    }
   };
 
   return Hand;

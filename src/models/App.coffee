@@ -5,7 +5,7 @@ class window.App extends Backbone.Model
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer() # Hand {} app.get('playerHand').hit()
     @set 'dealerHand', deck.dealDealer()
-    @get('dealerHand').on 'gameOver', => @compareScores()
+    @get('dealerHand').on 'compareScores', => @compareScores()
 
   compareScores: ->
     playerScore = @get('playerHand').scores()

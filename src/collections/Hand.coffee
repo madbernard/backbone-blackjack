@@ -5,6 +5,14 @@ class window.Hand extends Backbone.Collection
     @on 'stand', ->
       @.at(0).flip()
       @dealerPlay()
+
+    @lost = false
+
+    if not @isDealer
+      if @scores() is 21
+        @lost = true
+        alert 'Blackjack! You win!'
+
     #stop listening for hit, dealer plays until win or bust
     #flip dealer card over
 # the array is from the hand array [card, card]; the deck is the This.deck passed through
@@ -12,10 +20,18 @@ class window.Hand extends Backbone.Collection
 #this.isDealer = undefined || true
   hit: ->
     @add(@deck.pop())
+    if @scores() > 21 then @bust()
 
   stand: -> @trigger 'stand'
   #dealer isa  hand collection that is listening for stand, if dealer
   #then it signals that it can do things...  or just does thigns
+
+  bust: ->
+    @lost = true
+    if @isDealer
+      alert 'You win!'
+    else
+      alert "Dealer wins!"
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
@@ -37,7 +53,7 @@ class window.Hand extends Backbone.Collection
 
   dealerPlay: -> #plays cards
     @hit() while @scores() < 17
-    @trigger 'gameOver'
+    if not @lost then @trigger 'compareScores'
 ###
 
 if hasace is true
