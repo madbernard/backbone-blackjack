@@ -14,25 +14,30 @@ class window.Hand extends Backbone.Collection
   hit: ->
     @add(@deck.pop())
     if @scores() > 21
+      console.log 'calling bust'
       @bust()
 
   stand: ->
     @trigger 'stand', @
-    console.log('stand from player?')
+    #console.log('stand from player?')
   #dealer isa  hand collection that is listening for stand, if dealer
   #then it signals that it can do things...  or just does thigns
 
   bust: ->
+    console.log 'busted'
+    @trigger 'bust', @
     @lost = true
+    ###
     if @isDealer
       @trigger 'youWin', @
     else
       @trigger 'dealerWins', @
+    ###
 
   hasBlackjack: ->
     if @scores() is 21
       #console.log 'hasBlackjack is working'
-      @lost = true
+      #@lost = true
       @trigger 'blackJackWin', @
 
   hasAce: -> @reduce (memo, card) ->
@@ -56,6 +61,10 @@ class window.Hand extends Backbone.Collection
   dealerPlay: -> #plays cards
     @hit() while @scores() < 17
     if not @lost then @trigger 'stand', @
+    ###
+    console.log @lost
+      console.log @lost
+    ###
 ###
 
 if hasace is true

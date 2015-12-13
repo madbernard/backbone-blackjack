@@ -9,7 +9,7 @@ window.AppView = (function(superClass) {
     return AppView.__super__.constructor.apply(this, arguments);
   }
 
-  AppView.prototype.template = _.template('<button class="hit-button">Hit</button> <button class="stand-button">Stand</button> <div class="player-hand-container"></div> <div class="dealer-hand-container"></div>');
+  AppView.prototype.template = _.template('<button class="hit-button">Hit</button> <button class="stand-button">Stand</button> <button class="reset-button">Deal Another Hand</button> <div class="player-hand-container"></div> <div class="dealer-hand-container"></div>');
 
   AppView.prototype.events = {
     'click .hit-button': function() {
@@ -17,11 +17,14 @@ window.AppView = (function(superClass) {
     },
     'click .stand-button': function() {
       return this.model.get('playerHand').stand();
+    },
+    'click .reset-button': function() {
+      return this.model.reset();
     }
   };
 
   AppView.prototype.initialize = function() {
-    this.model.on('all', this.endCondition, this);
+    this.model.on('all', this.filter, this);
     return this.render();
   };
 
@@ -36,8 +39,32 @@ window.AppView = (function(superClass) {
     }).el);
   };
 
+  AppView.prototype.filter = function(trigger) {
+    if (trigger === 'youWinApp' || trigger === 'dealerWinApp' || trigger === 'youPushApp' || trigger === 'blackJackWinApp' || trigger === 'reshuffle') {
+      return this.endCondition(trigger);
+    } else if (trigger === 'reset') {
+      return this.render();
+    }
+  };
+
   AppView.prototype.endCondition = function(endTrigger) {
-    return this.$('.dealer-hand-container').append('<div class="Win">' + endTrigger + '</div>');
+    var display;
+    if (endTrigger === 'youWinApp') {
+      display = 'You win!!';
+    }
+    if (endTrigger === 'blackJackWinApp') {
+      display = 'BlackJack! You Win!';
+    }
+    if (endTrigger === 'youPushApp') {
+      display = 'You Push!';
+    }
+    if (endTrigger === 'dealerWinApp') {
+      display = 'You lose!';
+    }
+    if (endTrigger === 'reshuffle') {
+      display = 'Shuffling the deck!';
+    }
+    return this.$('.dealer-hand-container').append('<div class="Win">' + display + endTrigger + '</div>');
   };
 
   return AppView;

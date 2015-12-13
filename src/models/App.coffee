@@ -3,41 +3,57 @@
 class window.App extends Backbone.Model
   initialize: ->
     @set 'deck', deck = new Deck()
-    @set 'playerHand', deck.dealPlayer() # Hand {} app.get('playerHand').hit()
-    @set 'dealerHand', deck.dealDealer()
+    @dealHands()
+
+  reset: ->
+    if @get('deck').length < 13
+      @trigger 'reshuffle', @
+      @reshuffle()
+    else
+      @dealHands()
+      @trigger 'reset', @
+
+  dealHands: ->
+    @set 'playerHand', @get('deck').dealPlayer()
+    @set 'dealerHand', @get('deck').dealDealer()
     @get('playerHand').on 'all', @processPlayerEvent, @
     @get('dealerHand').on 'all', @processDealerEvent, @
+    @get('playerHand').hasBlackjack()
 
+  reshuffle: ->
+    @set 'deck', deck = new Deck()
+    @dealHands()
+    @trigger 'reset', @
 
   processDealerEvent: (event, hand) ->
     #console.log(event, 'dealer event processing function')
     if event is 'stand'
+      console.log 'dealer stood'
       @compareScores()
-    else if event is 'youWin'
-      @trigger 'youWinApp'
+    else if event is 'bust'
+      @trigger 'youWinApp', @
 
   processPlayerEvent: (event, hand) ->
     #console.log event
     if event is 'stand'
+      console.log 'player stood'
       @get('dealerHand').at(0).flip()
       @get('dealerHand').dealerPlay()
-    else if event is 'youWin'
-      @trigger 'youWinApp'
-    else if event is 'dealerWins'
-      @trigger 'dealerWinApp'
+    else if event is 'bust'
+      @trigger 'dealerWinApp', @
     else if event is 'blackJackWin'
-      @trigger 'blackJackWinApp'
+      @trigger 'blackJackWinApp', @
 
   compareScores: ->
     playerScore = @get('playerHand').scores()
     dealerScore = @get('dealerHand').scores()
 
     if playerScore > dealerScore
-      @trigger 'youWinApp'
+      @trigger 'youWinApp', @
     else if playerScore is dealerScore
-      @trigger 'youPushApp'
+      @trigger 'youPushApp', @
     else
-      @trigger 'dealerWinsApp'
+      @trigger 'dealerWinApp', @
 
       ###
           @on 'stand', ->
@@ -50,5 +66,5 @@ class window.App extends Backbone.Model
 #it calls a function that gets the scored from the playerhand and dealerHand
 #it alerts the winner or push
 
-# from Hand to app -> 'youWin''dealerWins''blackjackWin''stand'
-# from App to View -> 'youWin', 'dealerWins', 'youPush', 'blackjackWin'
+# from Hand to app -> 'bust''stand''blackJackWin'
+# from App to View -> 'youWinApp', 'dealerWinApp', 'youPushApp', 'blackJackWinApp'

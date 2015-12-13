@@ -16,7 +16,6 @@ class window.HandView extends Backbone.View
       new CardView(model: card).$el
     # setting the dom score to this.collection.scores() <- [hand.min(), hand.min() * 11 + hand.hasAces()]
     @$('.score').text @collection.scores()
-    if @collection.scores() > 21 then @collection.bust()
 
 # collection in line 15 is Hand
 # every time it renders it changes the score text based on calling minscore at position 0 in the scores array in Hand
