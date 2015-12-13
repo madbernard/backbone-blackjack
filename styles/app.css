@@ -1,3 +1,23 @@
+body {
+  background-image: url("../img/green-felt.jpg");
+  background-repeat: repeat;
+  /*font-family: Arial, sans-serif;*/
+  background-color: #999;
+  min-height: 100vh;
+  height: 100vh;
+  margin: 0;
+  overflow-y: scroll;
+}
+
+.play-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 800px;
+    margin: 0 auto;
+    height: 100%;
+}
+
 .card {
   float: left;
   border: solid 1px black;
@@ -13,4 +33,22 @@
 
 .hand {
   overflow: auto;
+}
+
+.win {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 68px;
+  margin-left: 141px;
+  border: solid 1px black;
+  width: 120px;
+  border-radius: 5px;
+  height: 167px;
+  margin-right: 20px;
+  background-color: #fff;
+}
+
+.win-text {
+  font-weight: bold;
+  text-align: center;
 }

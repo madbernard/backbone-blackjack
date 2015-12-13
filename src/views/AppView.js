@@ -9,6 +9,8 @@ window.AppView = (function(superClass) {
     return AppView.__super__.constructor.apply(this, arguments);
   }
 
+  AppView.prototype.className = 'play-table';
+
   AppView.prototype.template = _.template('<button class="hit-button">Hit</button> <button class="stand-button">Stand</button> <button class="reset-button">Deal Another Hand</button> <div class="player-hand-container"></div> <div class="dealer-hand-container"></div>');
 
   AppView.prototype.events = {
@@ -40,7 +42,9 @@ window.AppView = (function(superClass) {
   };
 
   AppView.prototype.filter = function(trigger) {
+    console.log(trigger);
     if (trigger === 'youWinApp' || trigger === 'dealerWinApp' || trigger === 'youPushApp' || trigger === 'blackJackWinApp' || trigger === 'reshuffle') {
+      console.log(trigger);
       return this.endCondition(trigger);
     } else if (trigger === 'reset') {
       return this.render();
@@ -64,7 +68,7 @@ window.AppView = (function(superClass) {
     if (endTrigger === 'reshuffle') {
       display = 'Shuffling the deck!';
     }
-    return this.$('.dealer-hand-container').append('<div class="Win">' + display + endTrigger + '</div>');
+    return this.$('.dealer-hand-container').append('<div class="win">' + '<span class="win-text">' + display + '</span>' + '</div>').fadeIn('slow');
   };
 
   return AppView;

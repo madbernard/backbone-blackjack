@@ -12,6 +12,8 @@ window.App = (function(superClass) {
   App.prototype.initialize = function() {
     var deck;
     this.set('deck', deck = new Deck());
+    this.set('playerHand', new Hand());
+    this.set('dealerHand', new Hand());
     return this.dealHands();
   };
 
@@ -30,7 +32,14 @@ window.App = (function(superClass) {
     this.set('dealerHand', this.get('deck').dealDealer());
     this.get('playerHand').on('all', this.processPlayerEvent, this);
     this.get('dealerHand').on('all', this.processDealerEvent, this);
-    return this.get('playerHand').hasBlackjack();
+    return this.checkBlackjack();
+  };
+
+  App.prototype.checkBlackjack = function() {
+    if (setTimeout(this.get('playerHand').hasBlackjack.bind(this.get('playerHand')), 500)) {
+      console.log('setTimeOut', this.get('playerHand'));
+      return this.trigger('blackJackWinApp', this);
+    }
   };
 
   App.prototype.reshuffle = function() {
@@ -51,13 +60,11 @@ window.App = (function(superClass) {
 
   App.prototype.processPlayerEvent = function(event, hand) {
     if (event === 'stand') {
-      console.log('player stood');
       this.get('dealerHand').at(0).flip();
       return this.get('dealerHand').dealerPlay();
     } else if (event === 'bust') {
+      console.log('blackJack in app');
       return this.trigger('dealerWinApp', this);
-    } else if (event === 'blackJackWin') {
-      return this.trigger('blackJackWinApp', this);
     }
   };
 

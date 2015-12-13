@@ -1,4 +1,5 @@
 class window.AppView extends Backbone.View
+  className: 'play-table'
   template: _.template '
     <button class="hit-button">Hit</button> <button class="stand-button">Stand</button> <button class="reset-button">Deal Another Hand</button>
     <div class="player-hand-container"></div>
@@ -26,7 +27,9 @@ class window.AppView extends Backbone.View
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
   filter: (trigger) ->
+    console.log trigger
     if trigger is 'youWinApp' or trigger is 'dealerWinApp' or trigger is 'youPushApp' or trigger is 'blackJackWinApp' or trigger is 'reshuffle'
+      console.log(trigger)
       @endCondition(trigger)
     else if trigger is 'reset'
       @render()
@@ -39,7 +42,7 @@ class window.AppView extends Backbone.View
     if endTrigger is 'dealerWinApp' then display = 'You lose!'
     if endTrigger is 'reshuffle' then display = 'Shuffling the deck!'
     # text inside varies based on trigger
-    @$('.dealer-hand-container').append('<div class="Win">' + display + endTrigger + '</div>')
+    @$('.dealer-hand-container').append('<div class="win">' + '<span class="win-text">' + display + '</span>' +'</div>').fadeIn('slow')
 
     # from App to View -> 'youWinApp', 'dealerWinApp', 'youPushApp', 'blackJackWinApp'
 

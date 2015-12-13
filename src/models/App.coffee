@@ -3,6 +3,8 @@
 class window.App extends Backbone.Model
   initialize: ->
     @set 'deck', deck = new Deck()
+    @set 'playerHand', new Hand()
+    @set 'dealerHand', new Hand()
     @dealHands()
 
   reset: ->
@@ -18,7 +20,15 @@ class window.App extends Backbone.Model
     @set 'dealerHand', @get('deck').dealDealer()
     @get('playerHand').on 'all', @processPlayerEvent, @
     @get('dealerHand').on 'all', @processDealerEvent, @
-    @get('playerHand').hasBlackjack()
+    # if @get('playerHand').hasBlackjack()
+    #   console.log(@get('playerHand').hasBlackjack(), 'the entire blackJack call')
+    #   @trigger 'blackJackWinApp', @
+    @checkBlackjack()
+
+  checkBlackjack: ->
+    if setTimeout(@get('playerHand').hasBlackjack.bind(@get('playerHand')), 500)
+      console.log('setTimeOut', @get('playerHand'))
+      @trigger 'blackJackWinApp', @
 
   reshuffle: ->
     @set 'deck', deck = new Deck()
@@ -36,13 +46,13 @@ class window.App extends Backbone.Model
   processPlayerEvent: (event, hand) ->
     #console.log event
     if event is 'stand'
-      console.log 'player stood'
       @get('dealerHand').at(0).flip()
       @get('dealerHand').dealerPlay()
     else if event is 'bust'
+      console.log 'blackJack in app'
       @trigger 'dealerWinApp', @
-    else if event is 'blackJackWin'
-      @trigger 'blackJackWinApp', @
+    # else if event is 'blackJackWin'
+    #   @trigger 'blackJackWinApp', @
 
   compareScores: ->
     playerScore = @get('playerHand').scores()
