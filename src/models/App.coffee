@@ -23,7 +23,8 @@ class window.App extends Backbone.Model
     # if @get('playerHand').hasBlackjack()
     #   console.log(@get('playerHand').hasBlackjack(), 'the entire blackJack call')
     #   @trigger 'blackJackWinApp', @
-    @checkBlackjack()
+    # @checkBlackjack()
+    @get('playerHand').hasBlackjack()
 
   checkBlackjack: ->
     # if setTimeout(@get('playerHand').hasBlackjack.bind(@get('playerHand')), 500)
@@ -50,10 +51,10 @@ class window.App extends Backbone.Model
       @get('dealerHand').at(0).flip()
       @get('dealerHand').dealerPlay()
     else if event is 'bust'
-      console.log 'blackJack in app'
       @trigger 'dealerWinApp', @
-    # else if event is 'blackJackWin'
-    #   @trigger 'blackJackWinApp', @
+    else if event is 'blackJackWin'
+      console.log 'blackJack in app'
+      @trigger 'blackJackWinApp', @
 
   compareScores: ->
     playerScore = @get('playerHand').scores()

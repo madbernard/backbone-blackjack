@@ -32,7 +32,7 @@ window.App = (function(superClass) {
     this.set('dealerHand', this.get('deck').dealDealer());
     this.get('playerHand').on('all', this.processPlayerEvent, this);
     this.get('dealerHand').on('all', this.processDealerEvent, this);
-    return this.checkBlackjack();
+    return this.get('playerHand').hasBlackjack();
   };
 
   App.prototype.checkBlackjack = function() {
@@ -61,8 +61,10 @@ window.App = (function(superClass) {
       this.get('dealerHand').at(0).flip();
       return this.get('dealerHand').dealerPlay();
     } else if (event === 'bust') {
-      console.log('blackJack in app');
       return this.trigger('dealerWinApp', this);
+    } else if (event === 'blackJackWin') {
+      console.log('blackJack in app');
+      return this.trigger('blackJackWinApp', this);
     }
   };
 

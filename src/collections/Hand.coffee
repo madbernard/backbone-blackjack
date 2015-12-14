@@ -37,9 +37,9 @@ class window.Hand extends Backbone.Collection
   hasBlackjack: ->
     if @scores() is 21
       console.log 'hasBlackjack is working'
-      true
-      # @lost = true
-      # @trigger 'blackJackWin', @
+      # true
+      @lost = true
+      @trigger 'blackJackWin', @
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1

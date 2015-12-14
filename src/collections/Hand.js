@@ -45,7 +45,8 @@ window.Hand = (function(superClass) {
   Hand.prototype.hasBlackjack = function() {
     if (this.scores() === 21) {
       console.log('hasBlackjack is working');
-      return true;
+      this.lost = true;
+      return this.trigger('blackJackWin', this);
     }
   };
 

@@ -42,10 +42,13 @@ window.AppView = (function(superClass) {
   };
 
   AppView.prototype.filter = function(trigger) {
+    var self;
     console.log(trigger);
-    if (trigger === 'youWinApp' || trigger === 'dealerWinApp' || trigger === 'youPushApp' || trigger === 'blackJackWinApp' || trigger === 'reshuffle') {
-      console.log(trigger);
-      return this.endCondition(trigger);
+    if (trigger === 'youWinApp' || trigger === 'dealerWinApp' || trigger === 'blackJackWinApp' || trigger === 'youPushApp' || trigger === 'reshuffle') {
+      self = this;
+      return _.delay(function() {
+        return self.endCondition(trigger);
+      });
     } else if (trigger === 'reset') {
       return this.render();
     }
@@ -53,11 +56,12 @@ window.AppView = (function(superClass) {
 
   AppView.prototype.endCondition = function(endTrigger) {
     var display;
+    console.log(endTrigger, 'in endCondtion');
     if (endTrigger === 'youWinApp') {
       display = 'You win!!';
     }
     if (endTrigger === 'blackJackWinApp') {
-      display = 'BlackJack! You Win!';
+      display = 'BlackJack!<p>You Win!';
     }
     if (endTrigger === 'youPushApp') {
       display = 'You Push!';

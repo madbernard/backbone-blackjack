@@ -28,16 +28,18 @@ class window.AppView extends Backbone.View
 
   filter: (trigger) ->
     console.log trigger
-    if trigger is 'youWinApp' or trigger is 'dealerWinApp' or trigger is 'youPushApp' or trigger is 'blackJackWinApp' or trigger is 'reshuffle'
-      console.log(trigger)
-      @endCondition(trigger)
+    if trigger is 'youWinApp' or trigger is 'dealerWinApp' or trigger is 'blackJackWinApp' or trigger is 'youPushApp' or trigger is 'reshuffle'
+      # console.log(trigger)
+      self = @
+      _.delay(() -> self.endCondition(trigger))
     else if trigger is 'reset'
       @render()
 
   endCondition: (endTrigger) ->
     # always tags a div on (last element)?
+    console.log(endTrigger, 'in endCondtion')
     if endTrigger is 'youWinApp' then display = 'You win!!'
-    if endTrigger is 'blackJackWinApp' then display = 'BlackJack! You Win!'
+    if endTrigger is 'blackJackWinApp' then display = 'BlackJack!<p>You Win!'
     if endTrigger is 'youPushApp' then display = 'You Push!'
     if endTrigger is 'dealerWinApp' then display = 'You lose!'
     if endTrigger is 'reshuffle' then display = 'Shuffling the deck!<p>Click "Deal Another Hand" to continue!'
