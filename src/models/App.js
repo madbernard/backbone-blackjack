@@ -36,8 +36,7 @@ window.App = (function(superClass) {
   };
 
   App.prototype.checkBlackjack = function() {
-    if (setTimeout(this.get('playerHand').hasBlackjack.bind(this.get('playerHand')), 500)) {
-      console.log('setTimeOut', this.get('playerHand'));
+    if (this.get('playerHand').hasBlackjack()) {
       return this.trigger('blackJackWinApp', this);
     }
   };
@@ -45,8 +44,7 @@ window.App = (function(superClass) {
   App.prototype.reshuffle = function() {
     var deck;
     this.set('deck', deck = new Deck());
-    this.dealHands();
-    return this.trigger('reset', this);
+    return this.dealHands();
   };
 
   App.prototype.processDealerEvent = function(event, hand) {

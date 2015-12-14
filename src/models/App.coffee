@@ -26,14 +26,15 @@ class window.App extends Backbone.Model
     @checkBlackjack()
 
   checkBlackjack: ->
-    if setTimeout(@get('playerHand').hasBlackjack.bind(@get('playerHand')), 500)
-      console.log('setTimeOut', @get('playerHand'))
+    # if setTimeout(@get('playerHand').hasBlackjack.bind(@get('playerHand')), 500)
+    #   console.log('setTimeOut', @get('playerHand'))
+    if @get('playerHand').hasBlackjack()
       @trigger 'blackJackWinApp', @
 
   reshuffle: ->
     @set 'deck', deck = new Deck()
     @dealHands()
-    @trigger 'reset', @
+    #@trigger 'reset', @
 
   processDealerEvent: (event, hand) ->
     #console.log(event, 'dealer event processing function')

@@ -36,19 +36,20 @@ body {
 }
 
 .win {
-  font-weight: bold;
-  text-align: center;
+  background-color: #fff;
+  border: solid 1px black;
+  border-radius: 5px;
   margin-top: 68px;
   margin-left: 141px;
-  border: solid 1px black;
-  width: 120px;
-  border-radius: 5px;
-  height: 167px;
   margin-right: 20px;
-  background-color: #fff;
+  width: 120px;
+  height: 167px;
+  text-align: center;
+  display: table;
 }
 
 .win-text {
   font-weight: bold;
-  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
 }

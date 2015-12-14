@@ -66,7 +66,7 @@ window.AppView = (function(superClass) {
       display = 'You lose!';
     }
     if (endTrigger === 'reshuffle') {
-      display = 'Shuffling the deck!';
+      display = 'Shuffling the deck!<p>Click "Deal Another Hand" to continue!';
     }
     return this.$('.dealer-hand-container').append('<div class="win">' + '<span class="win-text">' + display + '</span>' + '</div>').fadeIn('slow');
   };

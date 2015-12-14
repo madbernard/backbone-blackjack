@@ -40,7 +40,7 @@ class window.AppView extends Backbone.View
     if endTrigger is 'blackJackWinApp' then display = 'BlackJack! You Win!'
     if endTrigger is 'youPushApp' then display = 'You Push!'
     if endTrigger is 'dealerWinApp' then display = 'You lose!'
-    if endTrigger is 'reshuffle' then display = 'Shuffling the deck!'
+    if endTrigger is 'reshuffle' then display = 'Shuffling the deck!<p>Click "Deal Another Hand" to continue!'
     # text inside varies based on trigger
     @$('.dealer-hand-container').append('<div class="win">' + '<span class="win-text">' + display + '</span>' +'</div>').fadeIn('slow')
 
